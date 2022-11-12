@@ -4,6 +4,7 @@ import (
     "net/http"
 
     "github.com/gin-gonic/gin"
+    "web-service-gin/models"
 )
 
 
@@ -64,6 +65,10 @@ func main() {
     router.GET("/albums/:id", getAlbumByID)
     router.POST("/albums", postAlbums)
 
+    models = ConnectDatabase()
+
     router.Run("localhost:8080")
 }
 
+
+// https://medium.com/@cavdy/creating-restful-api-using-golang-and-postgres-part-1-58fe83c6f1ee  // TODO: future
