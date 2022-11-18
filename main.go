@@ -5,6 +5,7 @@ import (
 
     "github.com/gin-gonic/gin"
     "github.com/agn-7/web-service-gin/models"
+    "github.com/agn-7/web-service-gin/controllers"
 )
 
 
@@ -66,6 +67,10 @@ func main() {
     router.POST("/albums", postAlbums)
 
     models.ConnectDatabase()
+
+    router.GET("/db/albums", controllers.GetAlbums)
+    // router.GET("/db/albums/:id", getAlbumByID)
+    router.POST("/db/albums", controllers.InsertAlbums)
 
     router.Run("localhost:8080")
 }
