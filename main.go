@@ -69,7 +69,7 @@ func main() {
     models.ConnectDatabase()
 
     router.GET("/db/albums", controllers.GetAlbums)
-    // router.GET("/db/albums/:id", getAlbumByID)
+    router.GET("/db/albums/:id", controllers.GetAlbum)
     router.POST("/db/albums", controllers.InsertAlbums)
 
     router.Run("localhost:8080")

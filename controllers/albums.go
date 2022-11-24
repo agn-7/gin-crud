@@ -36,3 +36,15 @@ func InsertAlbums(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": album})
 }
+
+
+func GetAlbum(c *gin.Context) {
+	var album models.Album
+
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
+	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+	  return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": album})
+  }
