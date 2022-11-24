@@ -4,6 +4,8 @@ import (
     "net/http"
 
     "github.com/gin-gonic/gin"
+    "github.com/agn-7/web-service-gin/models"
+    "github.com/agn-7/web-service-gin/controllers"
 )
 
 
@@ -60,10 +62,24 @@ func getAlbumByID(c *gin.Context) {
 
 func main() {
     router := gin.Default()
+
     router.GET("/albums", getAlbums)
     router.GET("/albums/:id", getAlbumByID)
     router.POST("/albums", postAlbums)
 
-    router.Run("localhost:8080")
+    models.ConnectDatabase()
+
+    router.GET("/db/albums", controllers.GetAlbums)
+    router.GET("/db/albums/:id", controllers.GetAlbum)
+    router.POST("/db/albums", controllers.InsertAlbums)
+    router.PUT("/db/albums/:id", controllers.UpdateAlbum)
+    router.DELETE("/db/albums/:id", controllers.DeleteAlbum)
+
+    err := router.Run("localhost:8080")
+    if err != nil{
+        return
+    }
 }
 
+
+// https://medium.com/@cavdy/creating-restful-api-using-golang-and-postgres-part-1-58fe83c6f1ee  // TODO: future
