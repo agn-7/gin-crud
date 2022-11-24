@@ -15,6 +15,12 @@ type InsertAlbumInput struct {
 }
 
 
+type UpdateAlbumInput struct {
+	Title  string `json:"title"`
+	Artist string `json:"artist"`
+}
+
+
 func GetAlbums(c *gin.Context) {
 	var albums []models.Album
 	models.DB.Find(&albums)
@@ -48,3 +54,24 @@ func GetAlbum(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": album})
   }
+
+
+func UpdateAlbum(c *gin.Context) {
+	var album models.Album
+
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
+	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+	  return
+	}
+  
+	// Validate input
+	var input UpdateAlbumInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+	  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	  return
+	}
+  
+	models.DB.Model(&album).Updates(input)
+  
+	c.JSON(http.StatusOK, gin.H{"data": album})
+}

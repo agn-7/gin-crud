@@ -62,6 +62,7 @@ func getAlbumByID(c *gin.Context) {
 
 func main() {
     router := gin.Default()
+
     router.GET("/albums", getAlbums)
     router.GET("/albums/:id", getAlbumByID)
     router.POST("/albums", postAlbums)
@@ -71,6 +72,7 @@ func main() {
     router.GET("/db/albums", controllers.GetAlbums)
     router.GET("/db/albums/:id", controllers.GetAlbum)
     router.POST("/db/albums", controllers.InsertAlbums)
+    router.PUT("/db/albums/:id", controllers.UpdateAlbum)
 
     router.Run("localhost:8080")
 }
