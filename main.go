@@ -73,8 +73,12 @@ func main() {
     router.GET("/db/albums/:id", controllers.GetAlbum)
     router.POST("/db/albums", controllers.InsertAlbums)
     router.PUT("/db/albums/:id", controllers.UpdateAlbum)
+    router.DELETE("/db/albums/:id", controllers.DeleteAlbum)
 
-    router.Run("localhost:8080")
+    err := router.Run("localhost:8080")
+    if err != nil{
+        return
+    }
 }
 
 
