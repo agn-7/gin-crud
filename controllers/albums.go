@@ -63,16 +63,16 @@ func UpdateAlbum(c *gin.Context) {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 	  return
 	}
-  
+
 	// Validate input
 	var input UpdateAlbumInput
 	if err := c.ShouldBindJSON(&input); err != nil {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	  return
 	}
-  
+
 	models.DB.Model(&album).Updates(input)
-  
+
 	c.JSON(http.StatusOK, gin.H{"data": album})
 }
 
@@ -84,8 +84,8 @@ func DeleteAlbum(c *gin.Context) {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 	  return
 	}
-  
+
 	models.DB.Delete(&album)
-  
+
 	c.JSON(http.StatusOK, gin.H{"data": true})
 }
