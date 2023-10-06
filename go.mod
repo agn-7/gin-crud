@@ -1,6 +1,6 @@
 module github.com/agn-7/web-service-gin
 
-go 1.19
+go 1.21
 
 require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
