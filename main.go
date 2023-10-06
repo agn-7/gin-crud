@@ -4,7 +4,7 @@ import (
     "net/http"
 
     "github.com/gin-gonic/gin"
-    "web-service-gin/models"
+    "example/web-service-gin/models"
 )
 
 
@@ -65,7 +65,7 @@ func main() {
     router.GET("/albums/:id", getAlbumByID)
     router.POST("/albums", postAlbums)
 
-    models = ConnectDatabase()
+    models.ConnectDatabase()
 
     router.Run("localhost:8080")
 }
