@@ -14,6 +14,16 @@ info:
   contact: {}
 paths:
   /albums:
+    get:
+      description: get all albums
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.album'
+      summary: Get all albums
     post:
       consumes:
       - application/json

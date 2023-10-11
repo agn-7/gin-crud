@@ -16,6 +16,21 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/albums": {
+            "get": {
+                "description": "get all albums",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all albums",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.album"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create new album with input payload",
                 "consumes": [

@@ -28,13 +28,11 @@ var albums = []album{
 }
 
 // getAlbums responds with the list of all albums as JSON.
-// @Summary Get an album by id
-// @Description get album by ID
-// @ID get-album-by-id
+// @Summary Get all albums
+// @Description get all albums
 // @Produce  json
-// @Param id path int true "Album ID"
 // @Success 200 {object} album
-// @Router /albums/{id} [get]
+// @Router /albums [get]
 func getAlbums(c *gin.Context) {
     c.IndentedJSON(http.StatusOK, albums)
 }
@@ -63,7 +61,14 @@ func postAlbums(c *gin.Context) {
 }
 
 // getAlbumByID locates the album whose ID value matches the id
-// parameter sent by the client, then returns that album as a response.
+// getAlbums responds with the list of all albums as JSON.
+// @Summary Get an album by id
+// @Description get album by ID
+// @ID get-album-by-id
+// @Produce  json
+// @Param id path int true "Album ID"
+// @Success 200 {object} album
+// @Router /albums/{id} [get]
 func getAlbumByID(c *gin.Context) {
     id := c.Param("id")
 
