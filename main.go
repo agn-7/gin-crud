@@ -63,17 +63,29 @@ func getAlbumByID(c *gin.Context) {
 func main() {
     router := gin.Default()
 
-    router.GET("/albums", getAlbums)
-    router.GET("/albums/:id", getAlbumByID)
-    router.POST("/albums", postAlbums)
+    v1 := router.Group("/api/v1")
+    {
+        albums := v1.Group("/albums")
+        {
+            albums.GET("", getAlbums)
+            albums.GET(":id", getAlbumByID)
+            albums.POST("", postAlbums)
+        }
 
-    models.ConnectDatabase()
+        db := v1.Group("/db")
+        {
+            models.ConnectDatabase()
+            db_albums := db.Group("/albums")
+            {
+                db_albums.GET("", controllers.GetAlbums)
+                db_albums.GET(":id", controllers.GetAlbum)
+                db_albums.POST("", controllers.InsertAlbums)
+                db_albums.PUT(":id", controllers.UpdateAlbum)
+                db_albums.DELETE(":id", controllers.DeleteAlbum)
+            }
 
-    router.GET("/db/albums", controllers.GetAlbums)
-    router.GET("/db/albums/:id", controllers.GetAlbum)
-    router.POST("/db/albums", controllers.InsertAlbums)
-    router.PUT("/db/albums/:id", controllers.UpdateAlbum)
-    router.DELETE("/db/albums/:id", controllers.DeleteAlbum)
+        }
+    }
 
     err := router.Run("localhost:8080")
     if err != nil{
