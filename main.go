@@ -6,6 +6,9 @@ import (
     "github.com/gin-gonic/gin"
     "github.com/agn-7/web-service-gin/models"
     "github.com/agn-7/web-service-gin/controllers"
+    ginSwagger "github.com/swaggo/gin-swagger"
+    swaggerFiles "github.com/swaggo/files"
+    docs "github.com/agn-7/web-service-gin/docs"
 )
 
 
@@ -25,11 +28,26 @@ var albums = []album{
 }
 
 // getAlbums responds with the list of all albums as JSON.
+// @Summary Get an album by id
+// @Description get album by ID
+// @ID get-album-by-id
+// @Produce  json
+// @Param id path int true "Album ID"
+// @Success 200 {object} album
+// @Router /albums/{id} [get]
 func getAlbums(c *gin.Context) {
     c.IndentedJSON(http.StatusOK, albums)
 }
 
 // postAlbums adds an album from JSON received in the request body.
+// @Summary Create new album
+// @Description Create new album with input payload
+// @ID create-album
+// @Accept  json
+// @Produce  json
+// @Param input body album true "Album's info"
+// @Success 201 {object} album
+// @Router /albums [post]
 func postAlbums(c *gin.Context) {
     var newAlbum album
 
@@ -63,6 +81,7 @@ func getAlbumByID(c *gin.Context) {
 func main() {
     router := gin.Default()
 
+    docs.SwaggerInfo.BasePath = "/api/v1"
     v1 := router.Group("/api/v1")
     {
         albums := v1.Group("/albums")
@@ -87,11 +106,13 @@ func main() {
         }
     }
 
+    router.GET("/docs", func(c *gin.Context) {
+        c.Redirect(http.StatusMovedPermanently, "/docs/index.html")
+    })
+    router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
     err := router.Run("localhost:8080")
     if err != nil{
         return
     }
 }
-
-
-// https://medium.com/@cavdy/creating-restful-api-using-golang-and-postgres-part-1-58fe83c6f1ee  // TODO: future

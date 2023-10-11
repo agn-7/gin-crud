@@ -1,0 +1,55 @@
+definitions:
+  main.album:
+    properties:
+      artist:
+        type: string
+      id:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /albums:
+    post:
+      consumes:
+      - application/json
+      description: Create new album with input payload
+      operationId: create-album
+      parameters:
+      - description: Album's info
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/main.album'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.album'
+      summary: Create new album
+  /albums/{id}:
+    get:
+      description: get album by ID
+      operationId: get-album-by-id
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.album'
+      summary: Get an album by id
+swagger: "2.0"
