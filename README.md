@@ -1,4 +1,4 @@
 # web-service-gin
 
 
-Go + Gin Gonic + Gorm
+Go + Gin Gonic + Gorm + OpenAPI Swagger + Sqlite
