@@ -3,21 +3,42 @@ package models
 import (
 	"gorm.io/gorm"
 	"gorm.io/driver/sqlite"
+    "gorm.io/driver/postgres"
 )
 
-var DB *gorm.DB
+var SQLiteDB   *gorm.DB
+var PostgresDB *gorm.DB
 
-func ConnectDatabase() error {
-    database, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+
+func ConnectSQLite() error {
+    db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
     if err != nil {
         return err
     }
 
-    err = database.AutoMigrate(&Album{})
+    err = db.AutoMigrate(&Album{})
     if err != nil {
         return err
     }
 
-    DB = database
+    SQLiteDB = db
+    return nil
+}
+
+
+func ConnectPostgres() error {
+    dsn := "host=localhost " +
+        "user=ifsguid_usr " +
+        "password=root " +
+        "dbname=ifsguid_db " +
+        "port=5432 " +
+        "sslmode=disable"
+
+    db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+    if err != nil {
+        return err
+    }
+
+    PostgresDB = db
     return nil
 }
