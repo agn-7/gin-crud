@@ -88,6 +88,34 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/db/interactions": {
+            "get": {
+                "description": "Retrieves a list of all interactions",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all interactions",
+                "operationId": "get-all-interactions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Interaction"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -104,6 +132,49 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Interaction": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Message"
+                    }
+                },
+                "settings": {
+                    "type": "object"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Message": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "interaction_id": {
+                    "type": "integer"
+                },
+                "role": {
                     "type": "string"
                 }
             }
