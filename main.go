@@ -3,9 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/agn-7/web-service-gin/controllers"
-	docs "github.com/agn-7/web-service-gin/docs"
-	"github.com/agn-7/web-service-gin/models"
+	"github.com/agn-7/gin-crud/controllers"
+	docs "github.com/agn-7/gin-crud/docs"
+	"github.com/agn-7/gin-crud/models"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"

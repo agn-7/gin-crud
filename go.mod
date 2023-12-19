@@ -1,4 +1,4 @@
-module github.com/agn-7/web-service-gin
+module github.com/agn-7/gin-crud
 
 go 1.21
 

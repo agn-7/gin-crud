@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/agn-7/web-service-gin/models"
+	"github.com/agn-7/gin-crud/models"
 	"github.com/gin-gonic/gin"
 )
 
