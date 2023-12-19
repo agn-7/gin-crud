@@ -1,10 +1,10 @@
 package controllers
 
 import (
-"net/http"
+	"net/http"
 
-"github.com/gin-gonic/gin"
-"github.com/agn-7/web-service-gin/models"
+	"github.com/agn-7/gin-crud/models"
+	"github.com/gin-gonic/gin"
 )
 
 
@@ -23,7 +23,7 @@ type UpdateAlbumInput struct {
 
 func GetAlbums(c *gin.Context) {
 	var albums []models.Album
-	models.DB.Find(&albums)
+	models.SQLiteDB.Find(&albums)
 
 	c.JSON(http.StatusOK, gin.H{"data": albums})
 }
@@ -38,7 +38,7 @@ func InsertAlbums(c *gin.Context) {
 	}
 
 	album := models.Album{Title: input.Title, Artist: input.Artist, Price: input.Price}
-	models.DB.Create(&album)
+	models.SQLiteDB.Create(&album)
 
 	c.JSON(http.StatusOK, gin.H{"data": album})
 }
@@ -47,7 +47,7 @@ func InsertAlbums(c *gin.Context) {
 func GetAlbum(c *gin.Context) {
 	var album models.Album
 
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
+	if err := models.SQLiteDB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 	  return
 	}
@@ -59,7 +59,7 @@ func GetAlbum(c *gin.Context) {
 func UpdateAlbum(c *gin.Context) {
 	var album models.Album
 
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
+	if err := models.SQLiteDB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 	  return
 	}
@@ -71,7 +71,7 @@ func UpdateAlbum(c *gin.Context) {
 	  return
 	}
 
-	models.DB.Model(&album).Updates(input)
+	models.SQLiteDB.Model(&album).Updates(input)
 
 	c.JSON(http.StatusOK, gin.H{"data": album})
 }
@@ -80,12 +80,33 @@ func UpdateAlbum(c *gin.Context) {
 func DeleteAlbum(c *gin.Context) {
 	// Get model if exist
 	var album models.Album
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
+	if err := models.SQLiteDB.Where("id = ?", c.Param("id")).First(&album).Error; err != nil {
 	  c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
 	  return
 	}
 
-	models.DB.Delete(&album)
+	models.SQLiteDB.Delete(&album)
 
 	c.JSON(http.StatusOK, gin.H{"data": true})
+}
+
+
+// GetInteractions gets all interactions from the database
+// @Summary Get all interactions
+// @Description Retrieves a list of all interactions
+// @ID get-all-interactions
+// @Produce json
+// @Success 200 {array} models.Interaction
+// @Failure 500 {object} map[string]interface{}
+// @Router /db/interactions [get]
+func GetInteractions(c *gin.Context) {
+    var interactions []models.Interaction
+    result := models.PostgresDB.Preload("Messages").Find(&interactions)
+
+    if result.Error != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"data": interactions})
 }

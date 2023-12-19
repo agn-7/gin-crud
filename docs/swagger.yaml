@@ -10,6 +10,34 @@ definitions:
       title:
         type: string
     type: object
+  models.Interaction:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      messages:
+        items:
+          $ref: '#/definitions/models.Message'
+        type: array
+      settings:
+        type: object
+      updated_at:
+        type: string
+    type: object
+  models.Message:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      interaction_id:
+        type: integer
+      role:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -62,4 +90,23 @@ paths:
           schema:
             $ref: '#/definitions/main.album'
       summary: Get an album by id
+  /db/interactions:
+    get:
+      description: Retrieves a list of all interactions
+      operationId: get-all-interactions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Interaction'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all interactions
 swagger: "2.0"

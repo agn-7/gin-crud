@@ -1,16 +1,15 @@
 package main
 
 import (
-    "net/http"
+	"net/http"
 
-    "github.com/gin-gonic/gin"
-    "github.com/agn-7/web-service-gin/models"
-    "github.com/agn-7/web-service-gin/controllers"
-    ginSwagger "github.com/swaggo/gin-swagger"
-    swaggerFiles "github.com/swaggo/files"
-    docs "github.com/agn-7/web-service-gin/docs"
+	"github.com/agn-7/gin-crud/controllers"
+	docs "github.com/agn-7/gin-crud/docs"
+	"github.com/agn-7/gin-crud/models"
+	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
 
 // album represents data about a record album.
 type album struct {
@@ -98,7 +97,7 @@ func main() {
 
         db := v1.Group("/db")
         {
-            models.ConnectDatabase()
+            models.ConnectSQLite()
             db_albums := db.Group("/albums")
             {
                 db_albums.GET("", controllers.GetAlbums)
@@ -106,6 +105,12 @@ func main() {
                 db_albums.POST("", controllers.InsertAlbums)
                 db_albums.PUT(":id", controllers.UpdateAlbum)
                 db_albums.DELETE(":id", controllers.DeleteAlbum)
+            }
+
+            models.ConnectPostgres()
+            db_interactions := db.Group("/interactions")
+            {
+                db_interactions.GET("", controllers.GetInteractions)
             }
 
         }
